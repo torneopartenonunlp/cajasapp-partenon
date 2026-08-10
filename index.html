@@ -474,5 +474,33 @@ document.getElementById('txDate').value=todayISO(); document.getElementById('rem
 // Render inicial vacío hasta que Firebase responda
 render();
 </script>
+
+<div id="authGate" style="position:fixed;inset:0;background:#0f172a;color:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;font-family:system-ui,-apple-system,sans-serif;gap:18px;text-align:center;padding:24px">
+  <div style="font-size:44px">&#127942;</div>
+  <h2 style="margin:0;font-size:22px">CajasApp &mdash; Torneo Parten&oacute;n</h2>
+  <p id="authMsg" style="margin:0;opacity:.75;max-width:420px;line-height:1.5">Ingres&aacute; con la cuenta del torneo para ver y editar tus datos.</p>
+  <button id="btnLogin" style="padding:14px 28px;font-size:16px;border:0;border-radius:10px;background:#2563eb;color:#fff;cursor:pointer;font-weight:600">Ingresar con Google</button>
+</div>
+<script type="module">
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  const auth = getAuth();
+  window.cajasAuth = auth;
+  window.cerrarSesion = () => signOut(auth).then(()=>location.reload());
+  const gateEl = () => document.getElementById('authGate');
+  const msgEl  = () => document.getElementById('authMsg');
+  document.getElementById('btnLogin').addEventListener('click', async () => {
+    msgEl().textContent = 'Abriendo ventana de Google...';
+    try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+    catch (e) { msgEl().textContent = 'No se pudo ingresar (' + (e.code || e.message) + '). Prob\u00e1 de nuevo.'; }
+  });
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      gateEl().style.display = 'none';
+      if (typeof initFirebase === 'function') { try { initFirebase(); } catch(e) { console.warn(e); } }
+    } else {
+      gateEl().style.display = 'flex';
+    }
+  });
+</script>
 </body>
 </html>
