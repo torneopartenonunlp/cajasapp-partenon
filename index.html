@@ -466,7 +466,7 @@ function saveBox(id){ const p=cur(), name=document.getElementById('bxName').valu
 function delBox(id){ const p=cur(); const used=p.transactions.some(t=>t.boxId===id||t.fromBoxId===id||t.toBoxId===id); if(used && !confirm('Esta caja tiene movimientos asociados. ¿Eliminarla igualmente?'))return; p.boxes=p.boxes.filter(b=>b.id!==id); render(); }
 
 function exportData(){ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='CajasApp_respaldo_'+todayISO()+'.json'; a.click(); toast('⬇ Respaldo descargado'); }
-function importData(e){ const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ try{ state=JSON.parse(r.result); render(); toast('⬆ Datos importados'); } catch(err){ toast('⚠️ Archivo inválido'); } }; r.readAsText(f); e.target.value=''; }
+function importData(e){ const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ try{ state=JSON.parse(r.result); render(); saveToFirebase(); toast('⬆ Datos importados'); } catch(err){ toast('⚠️ Archivo inválido'); } }; r.readAsText(f); e.target.value=''; }
 
 let toastTimer; function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200); }
 
