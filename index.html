@@ -10,7 +10,7 @@
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBWph_ZjgtMGA33M5AnDNkBmRhOE1OJmSE",
+    apiKey: "PEGAR_AQUI_TU_API_KEY",
     authDomain: "cajasapp-partenon.firebaseapp.com",
     projectId: "cajasapp-partenon",
     storageBucket: "cajasapp-partenon.firebasestorage.app",
@@ -124,6 +124,7 @@
   .rem-item.done .rem-check{background:var(--green);border-color:var(--green);}
   .rem-info{flex:1;} .rconcept{font-weight:700;font-size:14px;} .rmeta{font-size:12px;color:var(--mut);}
   .ramt{font-weight:800;color:var(--blue);white-space:nowrap;}
+  .rem-actions{display:flex;gap:6px;}
   .badge-warn{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;background:#fef3c7;color:#b45309;}
   .badge-over{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;background:#fee2e2;color:#b91c1c;}
   .legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:14px;}
@@ -323,7 +324,6 @@ const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(3
 const todayISO = () => new Date().toISOString().slice(0,10);
 const fmt = n => '$ ' + Math.round(n).toLocaleString('es-AR');
 
-/* ===== ARRANQUE CON MANEJO DE ERRORES (nunca más pantalla en blanco) ===== */
 window.addEventListener('firebase-ready', () => {
   document.getElementById('loader').style.display = 'none';
   bootAuth();
@@ -580,7 +580,8 @@ function renderReminders(p){
     else if(diff<=7){ cls='soon'; badge=`<span class="badge-warn">${diff===0?'¡Hoy!':'En '+diff+' día'+(diff===1?'':'s')}</span>`; }
     const b=boxById(p,r.boxId);
     const elItem=document.createElement('div'); elItem.className='rem-item '+cls;
-    elItem.innerHTML=`<div class="rem-check" onclick="toggleRem('${r.id}')">${r.done?'✓':''}</div><div class="rdate">${d.getDate()}<small>${d.toLocaleString('es-AR',{month:'short'})}</small></div><div class="rem-info"><div class="rconcept">${r.concept} ${badge}</div><div class="rmeta">${b?b.name:''}</div></div><div class="ramt">${r.amount?fmt(r.amount):''}</div><button class="icon-btn danger" onclick="delRem('${r.id}')" title="Eliminar">🗑</button>`;
+    elItem.innerHTML=`<div class="rem-check" onclick="toggleRem('${r.id}')">${r.done?'✓':''}</div><div class="rdate">${d.getDate()}<small>${d.toLocaleString('es-AR',{month:'short'})}</small></div><div class="rem-info"><div class="rconcept">${escapeHtml(r.concept)} ${badge}</div><div class="rmeta">${b?b.name:''}</div></div><div class="ramt">${r.amount?fmt(r.amount):''}</div>
+      <div class="rem-actions"><button class="icon-btn" onclick="openRemModal('${r.id}')" title="Editar">✏️</button><button class="icon-btn danger" onclick="delRem('${r.id}')" title="Eliminar">🗑</button></div>`;
     el.appendChild(elItem);
   });
 }
@@ -590,6 +591,26 @@ function addReminder(){
   p.reminders.push({id:uid(), date, concept, amount:parseFloat(document.getElementById('remAmount').value)||0, boxId:document.getElementById('remBox').value, done:false});
   document.getElementById('remConcept').value=''; document.getElementById('remAmount').value='';
   toast('⏰ Recordatorio agregado'); render(); persist();
+}
+function openRemModal(id){
+  const p=cur(), r=id?p.reminders.find(x=>x.id===id):null;
+  const boxOpts=p.boxes.map(b=>`<option value="${b.id}" ${r&&r.boxId===b.id?'selected':''}>${b.name}</option>`).join('');
+  openModal(`<h3>✏️ Editar recordatorio</h3>
+    <div class="field"><label>Fecha</label><input type="date" id="rmDate" value="${r?r.date:todayISO()}"></div>
+    <div class="field"><label>Concepto</label><input type="text" id="rmConcept" value="${r?escapeHtml(r.concept):''}" placeholder="Ej: Transferir seña"></div>
+    <div class="field"><label>Monto</label><input type="number" id="rmAmount" value="${r?r.amount:0}" step="any"></div>
+    <div class="field"><label>Caja</label><select id="rmBox">${boxOpts}</select></div>
+    <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveRem('${r?r.id:''}')">Guardar</button></div>`);
+}
+function saveRem(id){
+  const p=cur();
+  const concept=document.getElementById('rmConcept').value.trim();
+  const date=document.getElementById('rmDate').value;
+  if(!concept||!date){ toast('⚠️ Completá fecha y concepto'); return; }
+  const vals={date, concept, amount:parseFloat(document.getElementById('rmAmount').value)||0, boxId:document.getElementById('rmBox').value};
+  if(id){ const r=p.reminders.find(x=>x.id===id); Object.assign(r, vals); }
+  else p.reminders.push({id:uid(), done:false, ...vals});
+  closeModal(); render(); persist(); toast('✅ Recordatorio guardado');
 }
 function toggleRem(id){ const r=cur().reminders.find(x=>x.id===id); r.done=!r.done; render(); persist(); }
 function delRem(id){ if(!confirm('¿Eliminar recordatorio?'))return; const p=cur(); p.reminders=p.reminders.filter(r=>r.id!==id); render(); persist(); }
@@ -791,7 +812,7 @@ function processQuestion(q){
       const diff = Math.round((d-now)/86400000);
       const icon = diff < 0 ? '🔴' : (diff <= 7 ? '🟡' : '🟢');
       const status = diff < 0 ? `Vencido hace ${-diff} días` : (diff === 0 ? 'Hoy' : `En ${diff} días`);
-      html += `<li>${icon} <b>${r.concept}</b> — ${fmt(r.amount)} (${status})</li>`;
+      html += `<li>${icon} <b>${escapeHtml(r.concept)}</b> — ${fmt(r.amount)} (${status})</li>`;
       plain += `${r.concept} por ${fmt(r.amount)}, ${status}. `;
     });
     html += '</ul>';
@@ -805,7 +826,7 @@ function processQuestion(q){
     let plain = `Últimos movimientos: `;
     last5.forEach(tx => {
       const icon = tx.type === 'ingreso' ? '⬆' : (tx.type === 'gasto' ? '⬇' : '🔁');
-      html += `<li>${icon} <b>${tx.date}</b> — ${tx.desc || tx.type} (${fmt(tx.amount)})</li>`;
+      html += `<li>${icon} <b>${tx.date}</b> — ${escapeHtml(tx.desc || tx.type)} (${fmt(tx.amount)})</li>`;
       plain += `${tx.desc || tx.type} por ${fmt(tx.amount)}. `;
     });
     html += '</ul>';
@@ -817,7 +838,7 @@ function processQuestion(q){
     const top = gastos[0];
     addBotMessage(`<b>🎯 Mayor gasto registrado:</b><ul class="mini-list">
       <li>📅 <b>Fecha:</b> ${top.date}</li><li>💰 <b>Monto:</b> ${fmt(top.amount)}</li>
-      <li>🏷️ <b>Categoría:</b> ${top.category || '—'}</li><li>📝 <b>Descripción:</b> ${top.desc || '—'}</li></ul>`,
+      <li>🏷️ <b>Categoría:</b> ${top.category || '—'}</li><li>📝 <b>Descripción:</b> ${escapeHtml(top.desc || '—')}</li></ul>`,
       `El mayor gasto fue ${fmt(top.amount)} el ${top.date}, ${top.desc || top.category}.`);
     return;
   }
@@ -825,10 +846,10 @@ function processQuestion(q){
   if(buscarMatch){
     const term = buscarMatch[1].trim();
     const found = p.transactions.filter(tx => (tx.desc || '').toLowerCase().includes(term) || (tx.category || '').toLowerCase().includes(term));
-    if(!found.length){ addBotMessage(`No encontré movimientos con "${term}".`, `No encontré movimientos con ${term}.`); return; }
-    let html = `<b>🔍 ${found.length} resultado(s) para "${term}":</b><ul class="mini-list">`;
+    if(!found.length){ addBotMessage(`No encontré movimientos con "${escapeHtml(term)}".`, `No encontré movimientos con ${term}.`); return; }
+    let html = `<b>🔍 ${found.length} resultado(s) para "${escapeHtml(term)}":</b><ul class="mini-list">`;
     let plain = `Encontré ${found.length} movimientos. `;
-    found.slice(0, 8).forEach(tx => { html += `<li>• ${tx.date} — ${tx.desc || '—'} (${fmt(tx.amount)})</li>`; plain += `${tx.desc} por ${fmt(tx.amount)}. `; });
+    found.slice(0, 8).forEach(tx => { html += `<li>• ${tx.date} — ${escapeHtml(tx.desc || '—')} (${fmt(tx.amount)})</li>`; plain += `${tx.desc} por ${fmt(tx.amount)}. `; });
     if(found.length > 8) html += `<li>...y ${found.length - 8} más</li>`;
     html += '</ul>';
     addBotMessage(html, plain); return;
@@ -851,7 +872,7 @@ function processQuestion(q){
   if(/proyecto|proyectos|todos/.test(text)){
     let html = `<b>📁 Tus proyectos:</b><ul class="mini-list">`;
     let plain = 'Tus proyectos: ';
-    state.projects.forEach(pr => { const pt = projectTotals(pr); html += `<li>${pr.emoji} <b>${pr.name}</b> — ${fmt(pt.total)}</li>`; plain += `${pr.name} ${fmt(pt.total)}. `; });
+    state.projects.forEach(pr => { const pt = projectTotals(pr); html += `<li>${pr.emoji} <b>${escapeHtml(pr.name)}</b> — ${fmt(pt.total)}</li>`; plain += `${pr.name} ${fmt(pt.total)}. `; });
     html += '</ul>';
     addBotMessage(html, plain); return;
   }
