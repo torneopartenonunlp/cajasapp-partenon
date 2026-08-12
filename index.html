@@ -1,4 +1,4 @@
-h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -149,17 +149,13 @@ h<!DOCTYPE html>
   .loading{position:fixed;inset:0;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;z-index:999;font-weight:bold;color:var(--teal);font-size:20px;}
   .chat-fab{position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(13,148,136,.4);cursor:pointer;z-index:98;transition:.2s;}
   .chat-fab:hover{transform:scale(1.08);}
-  .chat-fab.listening{animation:pulse 1.5s infinite;background:linear-gradient(135deg,var(--red),#f87171);}
-  @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(220,38,38,.4);}50%{box-shadow:0 8px 36px rgba(220,38,38,.7);}}
   .chat-panel{position:fixed;bottom:96px;right:24px;width:380px;max-width:calc(100vw - 48px);height:540px;max-height:calc(100vh - 120px);background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.2);display:none;flex-direction:column;z-index:97;overflow:hidden;}
-  .chat-panel.open{display:flex;animation:slideUp .25s ease;}
-  @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .chat-panel.open{display:flex;}
   .chat-header{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
   .chat-header h3{font-size:16px;display:flex;align-items:center;gap:8px;}
   .chat-header-actions{display:flex;gap:8px;}
   .chat-header button{background:rgba(255,255,255,.2);color:#fff;width:30px;height:30px;border-radius:8px;font-size:14px;}
   .chat-header button:hover{background:rgba(255,255,255,.3);}
-  .chat-header button.active{background:rgba(255,255,255,.4);}
   .chat-messages{flex:1;overflow-y:auto;padding:16px;background:#f8fafc;}
   .chat-msg{margin-bottom:12px;display:flex;gap:8px;max-width:85%;}
   .chat-msg.user{margin-left:auto;flex-direction:row-reverse;}
@@ -176,12 +172,19 @@ h<!DOCTYPE html>
   .chat-input{flex:1;padding:10px 14px;border:1.5px solid var(--line);border-radius:20px;font-size:14px;outline:none;}
   .chat-input:focus{border-color:var(--teal2);}
   .chat-input-area button{width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;}
-  .chat-input-area button:hover{background:var(--teal2);}
-  .chat-input-area button.mic.listening{background:var(--red);animation:pulse2 1.5s infinite;}
-  @keyframes pulse2{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
   .chat-suggestions{padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);background:#fff;}
   .chat-chip{background:#f1f5f9;color:var(--ink);padding:5px 10px;border-radius:12px;font-size:12px;cursor:pointer;}
   .chat-chip:hover{background:#e2e8f0;}
+  /* MODAL IMPORTAR */
+  .import-proj-list{max-height:280px;overflow-y:auto;margin:12px 0;}
+  .import-proj-item{display:flex;align-items:center;gap:10px;padding:10px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;}
+  .import-proj-item:hover{border-color:var(--teal);}
+  .import-proj-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--teal);}
+  .import-proj-item .ipname{font-weight:700;font-size:14px;}
+  .import-proj-item .ipdate{font-size:12px;color:var(--mut);}
+  .import-proj-item .ipbadge{margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;}
+  .ipbadge.nuevo{background:#dcfce7;color:#15803d;}
+  .ipbadge.existente{background:#fef3c7;color:#b45309;}
   @media(max-width:820px){
     .app{flex-direction:column;}.sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}.brand{margin-bottom:0;}.user-info{display:none;}.side-label{display:none;}.proj-item{width:auto;}.add-proj{margin-top:0;width:auto;}.side-actions{margin-top:0;}.main{padding:18px;}.bar-row{grid-template-columns:90px 1fr 90px;}
     .chat-panel{width:calc(100vw - 24px);right:12px;bottom:84px;height:60vh;}
@@ -296,18 +299,10 @@ const COLORS = ['#0d9488','#16a34a','#2563eb','#f59e0b','#dc2626','#8b5cf6','#db
 const ALLOWED_EMAIL = 'torneo.partenon.unlp@gmail.com';
 
 const SEED_DATA = {
-  settings:{ categories:['Material Deportivo','Uso Personal Compensable','Reparación Vehículo Proyecto','Alimentación Mascotas Proyecto','Logística / Envíos','Hospedaje','Transporte','Comidas / Buffet','Inscripción','Otros','Inscripciones','Entradas','Buffet','Honorarios','Medallas','Premios','Cotillón','Librería','Alimentación'] },
+  settings:{ categories:['Entradas','Inscripciones','Buffet','Premiación','Honorarios','Material deportivo','Logística','Librería','Ambientación','Alimentación','Alquileres','Otros','Diferencia de arqueo','Cuotas viaje','Alojamiento','Transporte','Comidas','Actividades','Administrativo','Salud / Emergencias'] },
   current:'p1',
   projects:[
-    { id:'p1', name:'Torneo Partenón', emoji:'🏆', date:'Recaudación del torneo',
-      boxes:[
-        {id:'b1', name:'Efectivo en mano', type:'efectivo', initial:0, color:'#16a34a'},
-        {id:'b2', name:'Bancarizado', type:'transferencia', initial:0, color:'#2563eb'}
-      ],
-      transactions:[], reminders:[]
-    },
-    { id:'p2', name:'Viaje Aguas Verdes', emoji:'🏖️', date:'1 al 4 de Octubre', boxes:[], transactions:[], reminders:[] },
-    { id:'p3', name:'Viaje Aguas Verdes', emoji:'🎄', date:'11 al 13 de Diciembre', boxes:[], transactions:[], reminders:[] }
+    { id:'p1', name:'Torneo Partenón', emoji:'🏆', date:'Recaudación del torneo', boxes:[], transactions:[], reminders:[] }
   ]
 };
 
@@ -331,46 +326,23 @@ window.addEventListener('firebase-ready', () => {
 
 function bootAuth(){
   const api = window.firebaseAPI;
-  if(!api){ showLogin(); showDenied('⚠️ Firebase no cargó. Revisá tu conexión a internet y recargá.'); return; }
-  if(api.apiKey && api.apiKey.indexOf('PEGAR_AQUI') === 0){
-    showLogin();
-    showDenied('⚠️ FALTA CARGAR LA API KEY. Abrí este archivo en el Bloc de notas, presioná Ctrl+H, buscá "PEGAR_AQUI_TU_API_KEY" y reemplazalo por tu clave de Firebase (⚙️ Configuración del proyecto → Tus apps).');
-    return;
-  }
+  if(!api){ showLogin(); showDenied('⚠️ Firebase no cargó.'); return; }
   try{
     api.onAuthStateChanged(api.auth, (user) => {
       authResolved = true;
       if (user && user.email === ALLOWED_EMAIL) showApp(user);
       else showLogin();
-    }, (err) => {
-      console.error('Auth error:', err);
-      authResolved = true;
-      showLogin();
-      showDenied('⚠️ Error de Firebase: ' + (err.code || err.message || 'desconocido') + '. Verificá que la API Key copiada sea exactamente la de tu proyecto.');
-    });
-  }catch(e){
-    console.error(e);
-    authResolved = true;
-    showLogin();
-    showDenied('⚠️ Error al iniciar Firebase: ' + e.message);
-  }
-  setTimeout(() => {
-    if(!authResolved){
-      showLogin();
-      showDenied('⚠️ No se pudo conectar con Firebase. Verificá la API Key y tu conexión a internet.');
-    }
-  }, 7000);
+    }, (err) => { authResolved = true; showLogin(); showDenied('⚠️ Error: ' + err.message); });
+  }catch(e){ authResolved = true; showLogin(); showDenied('⚠️ Error: ' + e.message); }
+  setTimeout(() => { if(!authResolved){ showLogin(); showDenied('⚠️ No se pudo conectar con Firebase.'); } }, 7000);
 }
 
 function login(){
   const { auth, provider, signInWithPopup, signOut } = window.firebaseAPI;
   signInWithPopup(auth, provider).then(res => {
     if (res.user.email === ALLOWED_EMAIL) showApp(res.user);
-    else { showDenied('Acceso denegado. Solo el usuario autorizado puede ingresar.'); signOut(auth); }
-  }).catch(err => {
-    console.error(err);
-    showDenied('❌ Error al iniciar sesión: ' + (err.code || err.message) + '. Si dice "api-key-not-valid", copiá la API Key correcta desde la consola de Firebase.');
-  });
+    else { showDenied('Acceso denegado.'); signOut(auth); }
+  }).catch(err => { showDenied('❌ Error: ' + err.message); });
 }
 function logout(){ window.firebaseAPI.signOut(window.firebaseAPI.auth).then(()=>location.reload()); }
 
@@ -382,18 +354,11 @@ function showApp(user){
   if(!subscribed){ subscribed = true; initFirebase(); }
   render();
   if(document.getElementById('chatMessages').children.length===0){
-    addBotMessage('¡Hola! 👋 Soy tu asistente. Preguntame sobre tus cajas, movimientos, gastos o recordatorios. Probá con "¿Cuánto tengo?" o "Ayuda".', null, true);
+    addBotMessage('¡Hola! 👋 Soy tu asistente. Preguntame sobre tus cajas o movimientos.', null, true);
   }
 }
-function showLogin(){
-  document.getElementById('mainApp').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('chatFab').style.display = 'none';
-}
-function showDenied(msg){
-  const el = document.getElementById('deniedMsg');
-  el.textContent = msg; el.style.display = 'block';
-}
+function showLogin(){ document.getElementById('mainApp').style.display='none'; document.getElementById('loginScreen').style.display='flex'; document.getElementById('chatFab').style.display='none'; }
+function showDenied(msg){ const el=document.getElementById('deniedMsg'); el.textContent=msg; el.style.display='block'; }
 
 function initFirebase(){
   const { db, doc, onSnapshot } = window.firebaseAPI;
@@ -401,7 +366,7 @@ function initFirebase(){
   onSnapshot(ref, snap => {
     if (snap.exists()) { state = snap.data(); render(); }
     else { render(); persist(); }
-  }, err => { console.error('Error Firebase:', err); toast('❌ Error de conexión a Firebase'); render(); });
+  }, err => { console.error('Error Firebase:', err); render(); });
 }
 
 function persist(){
@@ -414,57 +379,53 @@ const cur = () => state.projects.find(p=>p.id===state.current) || state.projects
 const boxById = (p,id)=>p.boxes.find(b=>b.id===id);
 
 function boxStats(p, box){
-  let bal = box.initial, spent=0, inflow=box.initial;
+  let bal=box.initial, spent=0, inflow=box.initial;
   p.transactions.forEach(t=>{
-    if(t.type==='ingreso' && t.boxId===box.id){ bal+=t.amount; inflow+=t.amount; }
-    if(t.type==='gasto' && t.boxId===box.id){ bal-=t.amount; spent+=t.amount; }
-    if(t.type==='transferencia'){
-      if(t.fromBoxId===box.id) bal-=t.amount;
-      if(t.toBoxId===box.id){ bal+=t.amount; inflow+=t.amount; }
-    }
+    if(t.type==='ingreso'&&t.boxId===box.id){bal+=t.amount;inflow+=t.amount;}
+    if(t.type==='gasto'&&t.boxId===box.id){bal-=t.amount;spent+=t.amount;}
+    if(t.type==='transferencia'){if(t.fromBoxId===box.id)bal-=t.amount;if(t.toBoxId===box.id){bal+=t.amount;inflow+=t.amount;}}
   });
-  const pct = inflow>0 ? Math.min(100, Math.round(spent/inflow*100)) : 0;
-  return {bal, spent, inflow, pct};
+  const pct=inflow>0?Math.min(100,Math.round(spent/inflow*100)):0;
+  return {bal,spent,inflow,pct};
 }
 function projectTotals(p){
   let total=0,totalEf=0,totalTr=0,totalSpent=0;
-  p.boxes.forEach(b=>{ const s=boxStats(p,b); total+=s.bal; totalSpent+=s.spent;
-    if(b.type==='efectivo') totalEf+=s.bal; else totalTr+=s.bal; });
+  p.boxes.forEach(b=>{const s=boxStats(p,b);total+=s.bal;totalSpent+=s.spent;if(b.type==='efectivo')totalEf+=s.bal;else totalTr+=s.bal;});
   return {total,totalEf,totalTr,totalSpent};
 }
 
 function render(){
-  const p = cur(); if(!p) return;
-  document.getElementById('mTitle').innerHTML = `${p.emoji} ${p.name}`;
-  document.getElementById('mSub').textContent = p.date || '';
+  const p=cur(); if(!p) return;
+  document.getElementById('mTitle').innerHTML=`${p.emoji} ${p.name}`;
+  document.getElementById('mSub').textContent=p.date||'';
   renderSidebar(); renderKpis(p); renderBoxes(p); fillSelects(p); renderTxTable(p); renderCharts(p); renderReminders(p);
 }
 
 function renderSidebar(){
-  const el = document.getElementById('projList'); el.innerHTML='';
+  const el=document.getElementById('projList'); el.innerHTML='';
   state.projects.forEach(p=>{
-    const t = projectTotals(p);
-    const b = document.createElement('button');
-    b.className = 'proj-item' + (p.id===state.current?' active':'');
-    b.innerHTML = `<span class="pemoji">${p.emoji}</span><span><span class="pname">${p.name}</span><br><span class="pdate">${p.date||''}</span></span><span class="pbal">${fmt(t.total)}</span>`;
-    b.onclick = ()=>{ state.current=p.id; editingTx=null; render(); persist(); };
+    const t=projectTotals(p);
+    const b=document.createElement('button');
+    b.className='proj-item'+(p.id===state.current?' active':'');
+    b.innerHTML=`<span class="pemoji">${p.emoji}</span><span><span class="pname">${p.name}</span><br><span class="pdate">${p.date||''}</span></span><span class="pbal">${fmt(t.total)}</span>`;
+    b.onclick=()=>{state.current=p.id;editingTx=null;render();persist();};
     el.appendChild(b);
   });
 }
 function renderKpis(p){
-  const t = projectTotals(p);
-  document.getElementById('kpis').innerHTML = `
+  const t=projectTotals(p);
+  document.getElementById('kpis').innerHTML=`
     <div class="kpi"><div class="k-label">Total del proyecto</div><div class="k-val">${fmt(t.total)}</div></div>
     <div class="kpi green"><div class="k-label">En efectivo</div><div class="k-val">${fmt(t.totalEf)}</div></div>
     <div class="kpi blue"><div class="k-label">Bancarizado</div><div class="k-val">${fmt(t.totalTr)}</div></div>
     <div class="kpi red"><div class="k-label">Total gastado</div><div class="k-val">${fmt(t.totalSpent)}</div></div>`;
 }
 function renderBoxes(p){
-  const el = document.getElementById('boxes'); el.innerHTML='';
+  const el=document.getElementById('boxes'); el.innerHTML='';
   p.boxes.forEach(b=>{
-    const s = boxStats(p,b);
-    const d = document.createElement('div'); d.className='box-card'; d.style.setProperty('--c', b.color);
-    d.innerHTML = `<div class="box-actions"><button class="icon-btn" title="Editar" onclick="openBoxModal('${b.id}')">✏️</button><button class="icon-btn danger" title="Eliminar" onclick="delBox('${b.id}')">🗑</button></div>
+    const s=boxStats(p,b);
+    const d=document.createElement('div'); d.className='box-card'; d.style.setProperty('--c',b.color);
+    d.innerHTML=`<div class="box-actions"><button class="icon-btn" onclick="openBoxModal('${b.id}')">✏️</button><button class="icon-btn danger" onclick="delBox('${b.id}')">🗑</button></div>
       <div class="box-head"><div class="box-name">${b.name}</div><span class="tag ${b.type}">${b.type}</span></div>
       <div class="box-balance" style="color:${b.color}">${fmt(s.bal)}</div>
       <div class="box-sub"><span>Ingresó: <b>${fmt(s.inflow)}</b></span><span>Usado: <b>${fmt(s.spent)}</b></span></div>
@@ -472,28 +433,28 @@ function renderBoxes(p){
       <div class="pct"><span>${s.pct}% utilizado</span><span>${100-s.pct}% disponible</span></div>`;
     el.appendChild(d);
   });
-  const add = document.createElement('button'); add.className='add-box'; add.innerHTML='＋<span>Agregar caja</span>'; add.onclick=()=>openBoxModal(); el.appendChild(add);
+  const add=document.createElement('button'); add.className='add-box'; add.innerHTML='＋<span>Agregar caja</span>'; add.onclick=()=>openBoxModal(); el.appendChild(add);
 }
 function fillSelects(p){
-  const opts = p.boxes.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+  const opts=p.boxes.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
   ['txBox','txFrom','txTo','remBox'].forEach(id=>document.getElementById(id).innerHTML=opts);
-  document.getElementById('txCat').innerHTML = state.settings.categories.map(c=>`<option>${c}</option>`).join('');
+  document.getElementById('txCat').innerHTML=state.settings.categories.map(c=>`<option>${c}</option>`).join('');
 }
 function setTxType(t){
-  txType=t; document.querySelectorAll('#typeSeg button').forEach(b=>b.classList.toggle('on', b.dataset.t===t));
-  const isTr = t==='transferencia';
-  document.getElementById('fBox').style.display = isTr?'none':'block';
-  document.getElementById('fFrom').style.display = isTr?'block':'none';
-  document.getElementById('fTo').style.display = isTr?'block':'none';
-  document.getElementById('fCat').style.display = (t==='gasto')?'block':'none';
+  txType=t; document.querySelectorAll('#typeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const isTr=t==='transferencia';
+  document.getElementById('fBox').style.display=isTr?'none':'block';
+  document.getElementById('fFrom').style.display=isTr?'block':'none';
+  document.getElementById('fTo').style.display=isTr?'block':'none';
+  document.getElementById('fCat').style.display=(t==='gasto')?'block':'none';
 }
 function addTx(){
   const p=cur(); const amount=parseFloat(document.getElementById('txAmount').value); const date=document.getElementById('txDate').value||todayISO();
-  if(!amount||amount<=0){ toast('⚠️ Ingresá un monto válido'); return; }
-  const tx={id:uid(), type:txType, amount, date, desc:document.getElementById('txDesc').value.trim()};
+  if(!amount||amount<=0){toast('⚠️ Ingresá un monto válido');return;}
+  const tx={id:uid(),type:txType,amount,date,desc:document.getElementById('txDesc').value.trim()};
   if(txType==='transferencia'){
     tx.fromBoxId=document.getElementById('txFrom').value; tx.toBoxId=document.getElementById('txTo').value;
-    if(tx.fromBoxId===tx.toBoxId){ toast('⚠️ Elegí cajas distintas'); return; }
+    if(tx.fromBoxId===tx.toBoxId){toast('⚠️ Elegí cajas distintas');return;}
   } else {
     tx.boxId=document.getElementById('txBox').value;
     if(txType==='gasto') tx.category=document.getElementById('txCat').value;
@@ -503,14 +464,14 @@ function addTx(){
   toast('✅ Movimiento registrado'); render(); persist();
 }
 function txBoxName(p,t){
-  if(t.type==='transferencia'){ const f=boxById(p,t.fromBoxId), o=boxById(p,t.toBoxId); return `${f?f.name:'?'} → ${o?o.name:'?'}`; }
-  const b=boxById(p,t.boxId); return b?b.name:'—';
+  if(t.type==='transferencia'){const f=boxById(p,t.fromBoxId),o=boxById(p,t.toBoxId);return`${f?f.name:'?'} → ${o?o.name:'?'}`;}
+  const b=boxById(p,t.boxId);return b?b.name:'—';
 }
 function renderTxTable(p){
   const body=document.getElementById('txBody'); body.innerHTML='';
   const sorted=[...p.transactions].sort((a,b)=>b.date.localeCompare(a.date));
-  document.getElementById('txCount').textContent = sorted.length+' registros';
-  if(!sorted.length){ body.innerHTML='<tr><td colspan="7" class="empty">Sin movimientos todavía. ¡Registrá el primero arriba! 👆</td></tr>'; return; }
+  document.getElementById('txCount').textContent=sorted.length+' registros';
+  if(!sorted.length){body.innerHTML='<tr><td colspan="7" class="empty">Sin movimientos todavía.</td></tr>';return;}
   sorted.forEach(t=>{
     const tr=document.createElement('tr');
     if(editingTx===t.id){
@@ -521,79 +482,78 @@ function renderTxTable(p){
         <td>${t.type==='gasto'?`<select id="e_cat">${catOpts}</select>`:'—'}</td>
         <td><input type="text" id="e_desc" value="${(t.desc||'').replace(/"/g,'&quot;')}"></td>
         <td><input type="number" id="e_amount" value="${t.amount}" step="any"></td>
-        <td style="white-space:nowrap;"><button class="icon-btn" onclick="saveTx('${t.id}')" title="Guardar">💾</button><button class="icon-btn" onclick="editingTx=null;render()" title="Cancelar">✖</button></td>`;
+        <td><button class="icon-btn" onclick="saveTx('${t.id}')">💾</button><button class="icon-btn" onclick="editingTx=null;render()">✖</button></td>`;
     } else {
-      const amtCls = t.type==='ingreso'?'pos':(t.type==='gasto'?'neg':'tr');
-      const sign = t.type==='ingreso'?'+':(t.type==='gasto'?'−':'⇄');
-      const catCell = t.type==='gasto'?`<span class="cat-dot" style="background:${catColor(t.category)}"></span>${t.category||'—'}`:'—';
+      const amtCls=t.type==='ingreso'?'pos':(t.type==='gasto'?'neg':'tr');
+      const sign=t.type==='ingreso'?'+':(t.type==='gasto'?'−':'⇄');
+      const catCell=t.type==='gasto'?`<span class="cat-dot" style="background:${catColor(t.category)}"></span>${t.category||'—'}`:'—';
       tr.innerHTML=`<td>${t.date}</td><td><span class="pill ${t.type}">${t.type}</span></td><td>${txBoxName(p,t)}</td><td>${catCell}</td><td>${t.desc||''}</td><td class="amt ${amtCls}">${sign} ${fmt(t.amount)}</td>
-        <td style="white-space:nowrap;"><button class="icon-btn" onclick="editingTx='${t.id}';render()" title="Editar">✏️</button><button class="icon-btn danger" onclick="delTx('${t.id}')" title="Eliminar">🗑</button></td>`;
+        <td><button class="icon-btn" onclick="editingTx='${t.id}';render()">✏️</button><button class="icon-btn danger" onclick="delTx('${t.id}')">🗑</button></td>`;
     }
     body.appendChild(tr);
   });
 }
 function saveTx(id){
-  const p=cur(), t=p.transactions.find(x=>x.id===id); if(!t)return;
+  const p=cur(),t=p.transactions.find(x=>x.id===id);if(!t)return;
   t.date=document.getElementById('e_date').value||t.date;
   t.amount=parseFloat(document.getElementById('e_amount').value)||0;
   t.desc=document.getElementById('e_desc').value;
-  if(t.type==='transferencia'){ t.fromBoxId=document.getElementById('e_from').value; t.toBoxId=document.getElementById('e_to').value; }
+  if(t.type==='transferencia'){t.fromBoxId=document.getElementById('e_from').value;t.toBoxId=document.getElementById('e_to').value;}
   else t.boxId=document.getElementById('e_box').value;
   if(t.type==='gasto') t.category=document.getElementById('e_cat').value;
-  editingTx=null; toast('✅ Movimiento actualizado'); render(); persist();
+  editingTx=null;toast('✅ Movimiento actualizado');render();persist();
 }
-function delTx(id){ if(!confirm('¿Eliminar este movimiento?'))return; const p=cur(); p.transactions=p.transactions.filter(t=>t.id!==id); render(); persist(); }
-function catColor(c){ const i=state.settings.categories.indexOf(c); return COLORS[(i<0?0:i)%COLORS.length]; }
+function delTx(id){if(!confirm('¿Eliminar?'))return;const p=cur();p.transactions=p.transactions.filter(t=>t.id!==id);render();persist();}
+function catColor(c){const i=state.settings.categories.indexOf(c);return COLORS[(i<0?0:i)%COLORS.length];}
 
 function renderCharts(p){
   const byCat={};
-  p.transactions.filter(t=>t.type==='gasto').forEach(t=>{ const c=t.category||'General'; byCat[c]=(byCat[c]||0)+t.amount; });
+  p.transactions.filter(t=>t.type==='gasto').forEach(t=>{const c=t.category||'General';byCat[c]=(byCat[c]||0)+t.amount;});
   const data=Object.entries(byCat).map(([k,v])=>({label:k,value:v,color:catColor(k)})).sort((a,b)=>b.value-a.value);
   const total=data.reduce((s,d)=>s+d.value,0);
-  document.getElementById('donutTotal').textContent = total? '· Total '+fmt(total):'';
-  const donut=document.getElementById('donut'), leg=document.getElementById('donutLegend');
-  if(!data.length){ donut.innerHTML='<div class="empty" style="padding:10px;">Sin gastos aún 🌱</div>'; leg.innerHTML=''; }
+  document.getElementById('donutTotal').textContent=total?'· Total '+fmt(total):'';
+  const donut=document.getElementById('donut'),leg=document.getElementById('donutLegend');
+  if(!data.length){donut.innerHTML='<div class="empty">Sin gastos aún 🌱</div>';leg.innerHTML='';}
   else{
-    const r=58, c=2*Math.PI*r; let off=0, segs='';
-    data.forEach(d=>{ const len=d.value/total*c;
-      segs+=`<circle cx="80" cy="80" r="${r}" fill="none" stroke="${d.color}" stroke-width="24" stroke-dasharray="${len} ${c-len}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)"></circle>`; off+=len; });
+    const r=58,c=2*Math.PI*r;let off=0,segs='';
+    data.forEach(d=>{const len=d.value/total*c;segs+=`<circle cx="80" cy="80" r="${r}" fill="none" stroke="${d.color}" stroke-width="24" stroke-dasharray="${len} ${c-len}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)"></circle>`;off+=len;});
     donut.innerHTML=`<svg width="160" height="160" viewBox="0 0 160 160">${segs}<text x="80" y="76" text-anchor="middle" font-size="12" fill="#64748b">Gastado</text><text x="80" y="95" text-anchor="middle" font-size="15" font-weight="800" fill="#0f172a">${fmt(total)}</text></svg>`;
     leg.innerHTML=data.map(d=>`<span><i style="background:${d.color}"></i>${d.label} · <b>${Math.round(d.value/total*100)}%</b></span>`).join('');
   }
   const bars=document.getElementById('bars');
   const bdata=p.boxes.map(b=>({label:b.name,value:boxStats(p,b).bal,color:b.color}));
   const max=Math.max(...bdata.map(d=>Math.abs(d.value)),1);
-  bars.innerHTML=bdata.map(d=>`<div class="bar-row"><div class="bar-label">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(2,Math.abs(d.value)/max*100)}%;background:${d.color}"></div></div><div class="bar-val">${fmt(d.value)}</div></div>`).join('') || '<div class="empty">Sin cajas</div>';
+  bars.innerHTML=bdata.map(d=>`<div class="bar-row"><div class="bar-label">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(2,Math.abs(d.value)/max*100)}%;background:${d.color}"></div></div><div class="bar-val">${fmt(d.value)}</div></div>`).join('')||'<div class="empty">Sin cajas</div>';
 }
 
 function renderReminders(p){
-  const el=document.getElementById('remList'); el.innerHTML='';
+  const el=document.getElementById('remList');el.innerHTML='';
   const list=[...p.reminders].sort((a,b)=>a.date.localeCompare(b.date));
-  if(!list.length){ el.innerHTML='<div class="empty">No hay recordatorios. Agregá una transferencia pendiente ⏰</div>'; return; }
-  const now=new Date(); now.setHours(0,0,0,0);
+  if(!list.length){el.innerHTML='<div class="empty">No hay recordatorios.</div>';return;}
+  const now=new Date();now.setHours(0,0,0,0);
   list.forEach(r=>{
     const d=new Date(r.date+'T00:00:00');
     const diff=Math.round((d-now)/86400000);
-    let cls='', badge='';
-    if(r.done) cls='done';
-    else if(diff<0){ cls='overdue'; badge=`<span class="badge-over">Vencido hace ${-diff} día${diff===-1?'':'s'}</span>`; }
-    else if(diff<=7){ cls='soon'; badge=`<span class="badge-warn">${diff===0?'¡Hoy!':'En '+diff+' día'+(diff===1?'':'s')}</span>`; }
+    let cls='',badge='';
+    if(r.done)cls='done';
+    else if(diff<0){cls='overdue';badge=`<span class="badge-over">Vencido hace ${-diff} día${diff===-1?'':'s'}</span>`;}
+    else if(diff<=7){cls='soon';badge=`<span class="badge-warn">${diff===0?'¡Hoy!':'En '+diff+' día'+(diff===1?'':'s')}</span>`;}
     const b=boxById(p,r.boxId);
-    const elItem=document.createElement('div'); elItem.className='rem-item '+cls;
+    const elItem=document.createElement('div');elItem.className='rem-item '+cls;
     elItem.innerHTML=`<div class="rem-check" onclick="toggleRem('${r.id}')">${r.done?'✓':''}</div><div class="rdate">${d.getDate()}<small>${d.toLocaleString('es-AR',{month:'short'})}</small></div><div class="rem-info"><div class="rconcept">${escapeHtml(r.concept)} ${badge}</div><div class="rmeta">${b?b.name:''}</div></div><div class="ramt">${r.amount?fmt(r.amount):''}</div>
-      <div class="rem-actions"><button class="icon-btn" onclick="openRemModal('${r.id}')" title="Editar">✏️</button><button class="icon-btn danger" onclick="delRem('${r.id}')" title="Eliminar">🗑</button></div>`;
+      <div class="rem-actions"><button class="icon-btn" onclick="openRemModal('${r.id}')">✏️</button><button class="icon-btn danger" onclick="delRem('${r.id}')">🗑</button></div>`;
     el.appendChild(elItem);
   });
 }
 function addReminder(){
-  const p=cur(); const concept=document.getElementById('remConcept').value.trim(); const date=document.getElementById('remDate').value;
-  if(!concept||!date){ toast('⚠️ Completá fecha y concepto'); return; }
-  p.reminders.push({id:uid(), date, concept, amount:parseFloat(document.getElementById('remAmount').value)||0, boxId:document.getElementById('remBox').value, done:false});
-  document.getElementById('remConcept').value=''; document.getElementById('remAmount').value='';
-  toast('⏰ Recordatorio agregado'); render(); persist();
+  const p=cur();const concept=document.getElementById('remConcept').value.trim();const date=document.getElementById('remDate').value;
+  if(!concept||!date){toast('⚠️ Completá fecha y concepto');return;}
+  p.reminders.push({id:uid(),date,concept,amount:parseFloat(document.getElementById('remAmount').value)||0,boxId:document.getElementById('remBox').value,done:false});
+  document.getElementById('remConcept').value='';document.getElementById('remAmount').value='';
+  toast('⏰ Recordatorio agregado');render();persist();
 }
 function openRemModal(id){
-  const p=cur(), r=id?p.reminders.find(x=>x.id===id):null;
+  const p=cur(),r=id?p.reminders.find(x=>x.id===id):null;
   const boxOpts=p.boxes.map(b=>`<option value="${b.id}" ${r&&r.boxId===b.id?'selected':''}>${b.name}</option>`).join('');
   openModal(`<h3>✏️ Editar recordatorio</h3>
     <div class="field"><label>Fecha</label><input type="date" id="rmDate" value="${r?r.date:todayISO()}"></div>
@@ -603,282 +563,188 @@ function openRemModal(id){
     <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveRem('${r?r.id:''}')">Guardar</button></div>`);
 }
 function saveRem(id){
-  const p=cur();
-  const concept=document.getElementById('rmConcept').value.trim();
-  const date=document.getElementById('rmDate').value;
-  if(!concept||!date){ toast('⚠️ Completá fecha y concepto'); return; }
-  const vals={date, concept, amount:parseFloat(document.getElementById('rmAmount').value)||0, boxId:document.getElementById('rmBox').value};
-  if(id){ const r=p.reminders.find(x=>x.id===id); Object.assign(r, vals); }
-  else p.reminders.push({id:uid(), done:false, ...vals});
-  closeModal(); render(); persist(); toast('✅ Recordatorio guardado');
+  const p=cur();const concept=document.getElementById('rmConcept').value.trim();const date=document.getElementById('rmDate').value;
+  if(!concept||!date){toast('⚠️ Completá fecha y concepto');return;}
+  const vals={date,concept,amount:parseFloat(document.getElementById('rmAmount').value)||0,boxId:document.getElementById('rmBox').value};
+  if(id){const r=p.reminders.find(x=>x.id===id);Object.assign(r,vals);}
+  else p.reminders.push({id:uid(),done:false,...vals});
+  closeModal();render();persist();toast('✅ Recordatorio guardado');
 }
-function toggleRem(id){ const r=cur().reminders.find(x=>x.id===id); r.done=!r.done; render(); persist(); }
-function delRem(id){ if(!confirm('¿Eliminar recordatorio?'))return; const p=cur(); p.reminders=p.reminders.filter(r=>r.id!==id); render(); persist(); }
+function toggleRem(id){const r=cur().reminders.find(x=>x.id===id);r.done=!r.done;render();persist();}
+function delRem(id){if(!confirm('¿Eliminar recordatorio?'))return;const p=cur();p.reminders=p.reminders.filter(r=>r.id!==id);render();persist();}
 
-function openModal(html){ document.getElementById('modalBox').innerHTML=html; document.getElementById('overlay').classList.add('open'); }
-function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
-document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay')closeModal(); });
+function openModal(html){document.getElementById('modalBox').innerHTML=html;document.getElementById('overlay').classList.add('open');}
+function closeModal(){document.getElementById('overlay').classList.remove('open');}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal();});
 
 function openProjectModal(id){
-  const p = id ? state.projects.find(x=>x.id===id) : null;
+  const p=id?state.projects.find(x=>x.id===id):null;
   openModal(`<h3>${p?'Editar':'Nuevo'} proyecto</h3>
-    <div class="field"><label>Nombre</label><input id="pjName" value="${p?p.name:''}" placeholder="Ej: Viaje a Aguas Verdes"></div>
-    <div class="field"><label>Emoji / ícono</label><input id="pjEmoji" value="${p?p.emoji:'📁'}" maxlength="4"></div>
+    <div class="field"><label>Nombre</label><input id="pjName" value="${p?p.name:''}" placeholder="Ej: Viaje"></div>
+    <div class="field"><label>Emoji</label><input id="pjEmoji" value="${p?p.emoji:'📁'}" maxlength="4"></div>
     <div class="field"><label>Fecha / descripción</label><input id="pjDate" value="${p?(p.date||''):''}" placeholder="Ej: 1 al 4 de Octubre"></div>
     <div class="modal-foot">${p?'<button class="btn ghost" style="color:var(--red);margin-right:auto;" onclick="delProject(\''+p.id+'\')">🗑 Eliminar</button>':''}<button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveProject('${p?p.id:''}')">Guardar</button></div>`);
 }
 function saveProject(id){
   const name=document.getElementById('pjName').value.trim();
-  if(!name){ toast('⚠️ El proyecto necesita un nombre'); return; }
-  const emoji=document.getElementById('pjEmoji').value||'📁'; const date=document.getElementById('pjDate').value;
-  if(id){ const p=state.projects.find(x=>x.id===id); Object.assign(p,{name,emoji,date}); }
-  else{ const np={id:uid(),name,emoji,date,boxes:[],transactions:[],reminders:[]}; state.projects.push(np); state.current=np.id; }
-  closeModal(); render(); persist(); toast('✅ Proyecto guardado');
+  if(!name){toast('⚠️ El proyecto necesita un nombre');return;}
+  const emoji=document.getElementById('pjEmoji').value||'📁';const date=document.getElementById('pjDate').value;
+  if(id){const p=state.projects.find(x=>x.id===id);Object.assign(p,{name,emoji,date});}
+  else{const np={id:uid(),name,emoji,date,boxes:[],transactions:[],reminders:[]};state.projects.push(np);state.current=np.id;}
+  closeModal();render();persist();toast('✅ Proyecto guardado');
 }
 function delProject(id){
-  if(!confirm('¿Eliminar este proyecto con todas sus cajas y movimientos?'))return;
+  if(!confirm('¿Eliminar este proyecto?'))return;
   state.projects=state.projects.filter(p=>p.id!==id);
-  if(state.current===id) state.current=state.projects[0]?state.projects[0].id:null;
-  if(!state.projects.length) state=JSON.parse(JSON.stringify(SEED_DATA));
-  closeModal(); render(); persist();
+  if(state.current===id)state.current=state.projects[0]?state.projects[0].id:null;
+  closeModal();render();persist();
 }
 function openBoxModal(id){
-  const p=cur(), b=id?boxById(p,id):null;
+  const p=cur(),b=id?boxById(p,id):null;
   const colorSel=(c)=>COLORS.map(col=>`<div class="color-opt ${col===(c||COLORS[0])?'sel':''}" style="background:${col}" onclick="pickColor(this,'${col}')"></div>`).join('');
   openModal(`<h3>${b?'Editar':'Nueva'} caja</h3>
-    <div class="field"><label>Nombre</label><input id="bxName" value="${b?b.name:''}" placeholder="Ej: Efectivo en mano"></div>
-    <div class="field"><label>Tipo</label><select id="bxType"><option value="efectivo" ${b&&b.type==='efectivo'?'selected':''}>💵 Efectivo</option><option value="transferencia" ${b&&b.type==='transferencia'?'selected':''}>🏦 Transferencia / Bancarizado</option></select></div>
+    <div class="field"><label>Nombre</label><input id="bxName" value="${b?b.name:''}" placeholder="Ej: Efectivo"></div>
+    <div class="field"><label>Tipo</label><select id="bxType"><option value="efectivo" ${b&&b.type==='efectivo'?'selected':''}>💵 Efectivo</option><option value="transferencia" ${b&&b.type==='transferencia'?'selected':''}>🏦 Transferencia</option></select></div>
     <div class="field"><label>Saldo inicial</label><input type="number" id="bxInitial" value="${b?b.initial:0}" step="any"></div>
     <div class="field"><label>Color</label><div class="color-opts">${colorSel(b?b.color:COLORS[0])}</div><input type="hidden" id="bxColor" value="${b?b.color:COLORS[0]}"></div>
     <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveBox('${b?b.id:''}')">Guardar</button></div>`);
 }
-function pickColor(el,col){ document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); document.getElementById('bxColor').value=col; }
+function pickColor(el,col){document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');document.getElementById('bxColor').value=col;}
 function saveBox(id){
-  const p=cur(), name=document.getElementById('bxName').value.trim();
-  if(!name){ toast('⚠️ La caja necesita un nombre'); return; }
-  const vals={name, type:document.getElementById('bxType').value, initial:parseFloat(document.getElementById('bxInitial').value)||0, color:document.getElementById('bxColor').value};
-  if(id) Object.assign(boxById(p,id), vals); else p.boxes.push({id:uid(), ...vals});
-  closeModal(); render(); persist(); toast('✅ Caja guardada');
+  const p=cur(),name=document.getElementById('bxName').value.trim();
+  if(!name){toast('⚠️ La caja necesita un nombre');return;}
+  const vals={name,type:document.getElementById('bxType').value,initial:parseFloat(document.getElementById('bxInitial').value)||0,color:document.getElementById('bxColor').value};
+  if(id)Object.assign(boxById(p,id),vals);else p.boxes.push({id:uid(),...vals});
+  closeModal();render();persist();toast('✅ Caja guardada');
 }
 function delBox(id){
   const p=cur();
   const used=p.transactions.some(t=>t.boxId===id||t.fromBoxId===id||t.toBoxId===id);
-  if(used && !confirm('Esta caja tiene movimientos asociados. ¿Eliminarla igualmente?'))return;
-  p.boxes=p.boxes.filter(b=>b.id!==id); render(); persist();
+  if(used&&!confirm('Esta caja tiene movimientos. ¿Eliminarla?'))return;
+  p.boxes=p.boxes.filter(b=>b.id!==id);render();persist();
 }
+
 function exportData(){
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='CajasApp_respaldo_'+todayISO()+'.json'; a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='CajasApp_respaldo_'+todayISO()+'.json';a.click();
   toast('⬇ Respaldo descargado');
 }
+
+// ── IMPORTAR CON COMBINACIÓN DE PROYECTOS ─────────────────────────────────────
 function importData(e){
-  const f=e.target.files[0]; if(!f)return;
+  const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{ try{ state=JSON.parse(r.result); render(); persist(); toast('⬆ Datos importados y guardados en la nube'); } catch(err){ toast('⚠️ Archivo inválido'); } };
-  r.readAsText(f); e.target.value='';
+  r.onload=()=>{
+    try{
+      const imported=JSON.parse(r.result);
+      if(!imported.projects){toast('⚠️ Archivo inválido');return;}
+
+      // Detectar proyectos nuevos vs existentes
+      const nuevos=[];
+      const existentes=[];
+      imported.projects.forEach(p=>{
+        const yaExiste=state.projects.find(x=>x.id===p.id||x.name.toLowerCase()===p.name.toLowerCase());
+        if(yaExiste) existentes.push({importado:p, actual:yaExiste});
+        else nuevos.push(p);
+      });
+
+      // Armar modal de selección
+      let html=`<h3>⬆ Importar proyectos</h3>
+        <p style="font-size:13px;color:var(--mut);margin-bottom:12px;">Seleccioná qué proyectos querés importar. Los proyectos que no selecciones se mantienen sin cambios.</p>
+        <div class="import-proj-list">`;
+
+      nuevos.forEach(p=>{
+        html+=`<label class="import-proj-item">
+          <input type="checkbox" name="imp" value="${p.id}" checked>
+          <span class="pemoji">${p.emoji}</span>
+          <span><div class="ipname">${escapeHtml(p.name)}</div><div class="ipdate">${p.date||''} · ${p.transactions.length} movimientos</div></span>
+          <span class="ipbadge nuevo">NUEVO</span>
+        </label>`;
+      });
+
+      existentes.forEach(({importado,actual})=>{
+        html+=`<label class="import-proj-item">
+          <input type="checkbox" name="imp" value="${importado.id}">
+          <span class="pemoji">${importado.emoji}</span>
+          <span><div class="ipname">${escapeHtml(importado.name)}</div><div class="ipdate">${importado.date||''} · ${importado.transactions.length} movimientos (reemplaza el existente)</div></span>
+          <span class="ipbadge existente">REEMPLAZA</span>
+        </label>`;
+      });
+
+      if(!nuevos.length&&!existentes.length){
+        toast('No se encontraron proyectos para importar.');
+        e.target.value='';return;
+      }
+
+      html+=`</div>
+        <div class="modal-foot">
+          <button class="btn ghost" onclick="closeModal()">Cancelar</button>
+          <button class="btn primary" onclick="confirmarImport(${JSON.stringify(imported).replace(/"/g,'&quot;')})">✅ Importar seleccionados</button>
+        </div>`;
+
+      // Guardar datos importados para usar en confirmarImport
+      window._importedData = imported;
+      openModal(html);
+    }catch(err){toast('⚠️ Archivo inválido: '+err.message);}
+  };
+  r.readAsText(f);e.target.value='';
 }
+
+function confirmarImport(){
+  const checks=document.querySelectorAll('input[name="imp"]:checked');
+  const selIds=new Set([...checks].map(c=>c.value));
+  const imported=window._importedData;
+  if(!selIds.size){closeModal();toast('No se seleccionó ningún proyecto.');return;}
+
+  imported.projects.forEach(p=>{
+    if(!selIds.has(p.id))return;
+    const idx=state.projects.findIndex(x=>x.id===p.id||x.name.toLowerCase()===p.name.toLowerCase());
+    if(idx>=0) state.projects[idx]=p; // reemplazar existente
+    else state.projects.push(p);       // agregar nuevo
+  });
+
+  // Combinar categorías sin duplicar
+  if(imported.settings&&imported.settings.categories){
+    imported.settings.categories.forEach(c=>{
+      if(!state.settings.categories.includes(c)) state.settings.categories.push(c);
+    });
+  }
+
+  closeModal();render();persist();
+  toast('✅ '+selIds.size+' proyecto(s) importado(s) correctamente');
+}
+
 let toastTimer;
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200); }
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
 
 document.getElementById('txDate').value=todayISO();
 document.getElementById('remDate').value=todayISO();
 setTxType('ingreso');
 
-/* ===== CHAT ASISTENTE ===== */
-function toggleChat(){
-  document.getElementById('chatPanel').classList.toggle('open');
-  if(document.getElementById('chatPanel').classList.contains('open')){
-    setTimeout(()=>document.getElementById('chatInput').focus(), 100);
-  }
-}
-function toggleVoice(){
-  voiceEnabled = !voiceEnabled;
-  const btn = document.getElementById('voiceToggle');
-  btn.textContent = voiceEnabled ? '🔊' : '🔇';
-  btn.classList.toggle('active', voiceEnabled);
-  toast(voiceEnabled ? '🔊 Voz activada' : '🔇 Voz desactivada');
-}
-function speak(text){
-  if(!voiceEnabled || !text) return;
-  if(!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'es-AR'; u.rate = 1.0;
-  window.speechSynthesis.speak(u);
-}
-function toggleMic(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ toast('⚠️ Tu navegador no soporta dictado de voz'); return; }
-  if(isListening){ recognition.stop(); return; }
-  recognition = new SR();
-  recognition.lang = 'es-AR';
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.onstart = () => { isListening = true; document.getElementById('micBtn').classList.add('listening'); };
-  recognition.onend = () => { isListening = false; document.getElementById('micBtn').classList.remove('listening'); };
-  recognition.onresult = (e) => { document.getElementById('chatInput').value = e.results[0][0].transcript; sendChat(); };
-  recognition.onerror = (e) => { if(e.error === 'not-allowed') toast('⚠️ Permiso de micrófono denegado'); else toast('⚠️ No pude escuchar, intentá de nuevo'); };
-  recognition.start();
-}
-function addUserMessage(text){
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg user';
-  div.innerHTML = `<div class="chat-avatar">👤</div><div class="chat-bubble">${escapeHtml(text)}</div>`;
-  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
-}
-function addBotMessage(html, plainText, silent){
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg bot';
-  div.innerHTML = `<div class="chat-avatar">🤖</div><div class="chat-bubble">${html}</div>`;
-  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
-  if(!silent){
-    if(plainText) speak(plainText);
-    else{ const tmp=document.createElement('div'); tmp.innerHTML=html; speak(tmp.textContent||tmp.innerText); }
-  }
-}
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function clearChat(){ document.getElementById('chatMessages').innerHTML = ''; addBotMessage('Chat limpio. ¿En qué te ayudo ahora?'); }
-function askBot(q){ document.getElementById('chatInput').value = q; sendChat(); }
-function sendChat(){
-  const input = document.getElementById('chatInput');
-  const q = input.value.trim();
-  if(!q) return;
-  addUserMessage(q); input.value = '';
-  setTimeout(() => processQuestion(q), 150);
-}
+/* ===== CHAT ===== */
+function toggleChat(){document.getElementById('chatPanel').classList.toggle('open');if(document.getElementById('chatPanel').classList.contains('open'))setTimeout(()=>document.getElementById('chatInput').focus(),100);}
+function toggleVoice(){voiceEnabled=!voiceEnabled;const btn=document.getElementById('voiceToggle');btn.textContent=voiceEnabled?'🔊':'🔇';toast(voiceEnabled?'🔊 Voz activada':'🔇 Voz desactivada');}
+function speak(text){if(!voiceEnabled||!text||!('speechSynthesis' in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-AR';window.speechSynthesis.speak(u);}
+function toggleMic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('⚠️ Sin soporte de voz');return;}if(isListening){recognition.stop();return;}recognition=new SR();recognition.lang='es-AR';recognition.onstart=()=>{isListening=true;document.getElementById('micBtn').classList.add('listening');};recognition.onend=()=>{isListening=false;document.getElementById('micBtn').classList.remove('listening');};recognition.onresult=(e)=>{document.getElementById('chatInput').value=e.results[0][0].transcript;sendChat();};recognition.onerror=()=>toast('⚠️ No pude escuchar');recognition.start();}
+function addUserMessage(text){const msgs=document.getElementById('chatMessages');const div=document.createElement('div');div.className='chat-msg user';div.innerHTML=`<div class="chat-avatar">👤</div><div class="chat-bubble">${escapeHtml(text)}</div>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function addBotMessage(html,plainText,silent){const msgs=document.getElementById('chatMessages');const div=document.createElement('div');div.className='chat-msg bot';div.innerHTML=`<div class="chat-avatar">🤖</div><div class="chat-bubble">${html}</div>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;if(!silent){if(plainText)speak(plainText);else{const tmp=document.createElement('div');tmp.innerHTML=html;speak(tmp.textContent||tmp.innerText);}}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function clearChat(){document.getElementById('chatMessages').innerHTML='';addBotMessage('Chat limpio. ¿En qué te ayudo?');}
+function askBot(q){document.getElementById('chatInput').value=q;sendChat();}
+function sendChat(){const input=document.getElementById('chatInput');const q=input.value.trim();if(!q)return;addUserMessage(q);input.value='';setTimeout(()=>processQuestion(q),150);}
 function processQuestion(q){
-  const text = q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const p = cur();
-  const t = projectTotals(p);
-
-  if(/ayuda|help|comandos|que podes|que sabes/.test(text)){
-    addBotMessage(`<b>🤖 Puedo ayudarte con:</b><ul class="mini-list">
-      <li>💵 <b>"¿Cuánto tengo?"</b> — saldos de todas las cajas</li>
-      <li>📊 <b>"Resumen del proyecto"</b> — totales generales</li>
-      <li>📈 <b>"Gastos por categoría"</b> — desglose de gastos</li>
-      <li>⏰ <b>"Recordatorios"</b> — pendientes y vencidos</li>
-      <li>📒 <b>"Últimos movimientos"</b> — historial reciente</li>
-      <li>🔍 <b>"Buscar X"</b> — busca en descripciones</li>
-      <li>📅 <b>"Movimientos de [mes]"</b> — filtra por mes</li>
-      <li>🎯 <b>"Mayor gasto"</b> — el gasto más alto</li></ul>`);
-    return;
-  }
-  if(/saldo|cuanto tengo|balance|efectivo|cuanto hay|plata|dinero/.test(text)){
-    let html = `<b>💰 Saldos actuales de ${p.name}:</b><ul class="mini-list">`;
-    let plain = `Saldos actuales de ${p.name}: `;
-    p.boxes.forEach(b => {
-      const s = boxStats(p, b);
-      const icon = b.type === 'efectivo' ? '💵' : '🏦';
-      html += `<li>${icon} <b>${b.name}</b>: ${fmt(s.bal)}</li>`;
-      plain += `${b.name} ${fmt(s.bal)}. `;
-    });
-    html += `</ul><br>📦 <b>Total general:</b> ${fmt(t.total)}`;
-    plain += `Total general ${fmt(t.total)}.`;
-    addBotMessage(html, plain); return;
-  }
-  if(/resumen|general|total|estado/.test(text)){
-    const html = `<b>📊 Resumen de ${p.name}:</b><ul class="mini-list">
-      <li>💰 Total del proyecto: <b>${fmt(t.total)}</b></li>
-      <li>💵 En efectivo: <b>${fmt(t.totalEf)}</b></li>
-      <li>🏦 Bancarizado: <b>${fmt(t.totalTr)}</b></li>
-      <li>💸 Total gastado: <b>${fmt(t.totalSpent)}</b></li>
-      <li>📒 Movimientos: <b>${p.transactions.length}</b></li>
-      <li>⏰ Recordatorios: <b>${p.reminders.filter(r=>!r.done).length}</b> pendientes</li></ul>`;
-    const plain = `Resumen de ${p.name}. Total ${fmt(t.total)}. Efectivo ${fmt(t.totalEf)}. Bancarizado ${fmt(t.totalTr)}. Gastado ${fmt(t.totalSpent)}.`;
-    addBotMessage(html, plain); return;
-  }
-  if(/gasto|categoria|desglose|donde gaste|en que gaste/.test(text)){
-    const byCat = {};
-    p.transactions.filter(tx=>tx.type==='gasto').forEach(tx => { const c = tx.category || 'General'; byCat[c] = (byCat[c] || 0) + tx.amount; });
-    const data = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
-    if(!data.length){ addBotMessage('No hay gastos registrados todavía en este proyecto.', 'No hay gastos registrados todavía.'); return; }
-    const total = data.reduce((s,d)=>s+d[1],0);
-    let html = `<b>📈 Gastos por categoría (${fmt(total)}):</b><ul class="mini-list">`;
-    let plain = `Gastos por categoría. Total ${fmt(total)}. `;
-    data.forEach(([cat, amt]) => { const pct = Math.round(amt/total*100); html += `<li><b>${cat}</b>: ${fmt(amt)} (${pct}%)</li>`; plain += `${cat} ${fmt(amt)} (${pct}%). `; });
-    html += '</ul>';
-    addBotMessage(html, plain); return;
-  }
-  if(/recordatorio|pendiente|vencido|proxim|recordar/.test(text)){
-    const pending = p.reminders.filter(r => !r.done);
-    if(!pending.length){ addBotMessage('✅ No tenés recordatorios pendientes.', 'No tenés recordatorios pendientes.'); return; }
-    let html = `<b>⏰ Recordatorios (${pending.length}):</b><ul class="mini-list">`;
-    let plain = `Tenés ${pending.length} recordatorios pendientes. `;
-    pending.forEach(r => {
-      const d = new Date(r.date+'T00:00:00');
-      const now = new Date(); now.setHours(0,0,0,0);
-      const diff = Math.round((d-now)/86400000);
-      const icon = diff < 0 ? '🔴' : (diff <= 7 ? '🟡' : '🟢');
-      const status = diff < 0 ? `Vencido hace ${-diff} días` : (diff === 0 ? 'Hoy' : `En ${diff} días`);
-      html += `<li>${icon} <b>${escapeHtml(r.concept)}</b> — ${fmt(r.amount)} (${status})</li>`;
-      plain += `${r.concept} por ${fmt(r.amount)}, ${status}. `;
-    });
-    html += '</ul>';
-    addBotMessage(html, plain); return;
-  }
-  if(/ultim|reciente|historial|movimiento/.test(text)){
-    const sorted = [...p.transactions].sort((a,b)=>b.date.localeCompare(a.date));
-    if(!sorted.length){ addBotMessage('Aún no hay movimientos registrados.', 'Aún no hay movimientos registrados.'); return; }
-    const last5 = sorted.slice(0, 5);
-    let html = `<b>📒 Últimos ${last5.length} movimientos:</b><ul class="mini-list">`;
-    let plain = `Últimos movimientos: `;
-    last5.forEach(tx => {
-      const icon = tx.type === 'ingreso' ? '⬆' : (tx.type === 'gasto' ? '⬇' : '🔁');
-      html += `<li>${icon} <b>${tx.date}</b> — ${escapeHtml(tx.desc || tx.type)} (${fmt(tx.amount)})</li>`;
-      plain += `${tx.desc || tx.type} por ${fmt(tx.amount)}. `;
-    });
-    html += '</ul>';
-    addBotMessage(html, plain); return;
-  }
-  if(/mayor|maximo|max|gasto grande/.test(text)){
-    const gastos = p.transactions.filter(tx=>tx.type==='gasto').sort((a,b)=>b.amount-a.amount);
-    if(!gastos.length){ addBotMessage('No hay gastos registrados.', 'No hay gastos registrados.'); return; }
-    const top = gastos[0];
-    addBotMessage(`<b>🎯 Mayor gasto registrado:</b><ul class="mini-list">
-      <li>📅 <b>Fecha:</b> ${top.date}</li><li>💰 <b>Monto:</b> ${fmt(top.amount)}</li>
-      <li>🏷️ <b>Categoría:</b> ${top.category || '—'}</li><li>📝 <b>Descripción:</b> ${escapeHtml(top.desc || '—')}</li></ul>`,
-      `El mayor gasto fue ${fmt(top.amount)} el ${top.date}, ${top.desc || top.category}.`);
-    return;
-  }
-  const buscarMatch = text.match(/busca[r]?\s+(.+)/);
-  if(buscarMatch){
-    const term = buscarMatch[1].trim();
-    const found = p.transactions.filter(tx => (tx.desc || '').toLowerCase().includes(term) || (tx.category || '').toLowerCase().includes(term));
-    if(!found.length){ addBotMessage(`No encontré movimientos con "${escapeHtml(term)}".`, `No encontré movimientos con ${term}.`); return; }
-    let html = `<b>🔍 ${found.length} resultado(s) para "${escapeHtml(term)}":</b><ul class="mini-list">`;
-    let plain = `Encontré ${found.length} movimientos. `;
-    found.slice(0, 8).forEach(tx => { html += `<li>• ${tx.date} — ${escapeHtml(tx.desc || '—')} (${fmt(tx.amount)})</li>`; plain += `${tx.desc} por ${fmt(tx.amount)}. `; });
-    if(found.length > 8) html += `<li>...y ${found.length - 8} más</li>`;
-    html += '</ul>';
-    addBotMessage(html, plain); return;
-  }
-  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const mesMatch = text.match(new RegExp(`(${meses.join('|')})`));
-  if(mesMatch){
-    const mesIdx = meses.indexOf(mesMatch[1]);
-    const movsMes = p.transactions.filter(tx => parseInt(tx.date.split('-')[1]) - 1 === mesIdx);
-    if(!movsMes.length){ addBotMessage(`No hay movimientos en ${meses[mesIdx]}.`, `No hay movimientos en ${meses[mesIdx]}.`); return; }
-    const ingresos = movsMes.filter(x=>x.type==='ingreso').reduce((s,x)=>s+x.amount,0);
-    const gastos = movsMes.filter(x=>x.type==='gasto').reduce((s,x)=>s+x.amount,0);
-    addBotMessage(`<b>📅 Movimientos de ${meses[mesIdx]}:</b><ul class="mini-list">
-      <li>📒 Total movimientos: <b>${movsMes.length}</b></li>
-      <li>⬆ Ingresos: <b>${fmt(ingresos)}</b></li>
-      <li>⬇ Gastos: <b>${fmt(gastos)}</b></li></ul>`,
-      `En ${meses[mesIdx]} hubo ${movsMes.length} movimientos. Ingresos ${fmt(ingresos)}, gastos ${fmt(gastos)}.`);
-    return;
-  }
-  if(/proyecto|proyectos|todos/.test(text)){
-    let html = `<b>📁 Tus proyectos:</b><ul class="mini-list">`;
-    let plain = 'Tus proyectos: ';
-    state.projects.forEach(pr => { const pt = projectTotals(pr); html += `<li>${pr.emoji} <b>${escapeHtml(pr.name)}</b> — ${fmt(pt.total)}</li>`; plain += `${pr.name} ${fmt(pt.total)}. `; });
-    html += '</ul>';
-    addBotMessage(html, plain); return;
-  }
-  if(/hola|buenas|hey|saludos/.test(text)){ addBotMessage(`¡Hola! 👋 ¿En qué te puedo ayudar? Probá con "¿Cuánto tengo?" o "Resumen del proyecto".`, '¡Hola! ¿En qué te puedo ayudar?'); return; }
-  if(/gracias|thanks|genial|perfecto|excelente/.test(text)){ const r = '¡De nada! 😊 Acá estoy para lo que necesites.'; addBotMessage(r, r); return; }
-  addBotMessage(`No entendí bien tu pregunta. Escribí <b>"Ayuda"</b> para ver todo lo que puedo hacer, o probá con:<ul class="mini-list"><li>¿Cuánto tengo?</li><li>Resumen del proyecto</li><li>Gastos por categoría</li><li>Recordatorios pendientes</li></ul>`);
+  const text=q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const p=cur();const t=projectTotals(p);
+  if(/ayuda|help/.test(text)){addBotMessage(`<b>🤖 Comandos disponibles:</b><ul class="mini-list"><li>💰 ¿Cuánto tengo?</li><li>📊 Resumen</li><li>📈 Gastos por categoría</li><li>⏰ Recordatorios</li><li>📒 Últimos movimientos</li><li>🔍 Buscar [texto]</li></ul>`);return;}
+  if(/saldo|cuanto tengo|balance|efectivo/.test(text)){let html=`<b>💰 Saldos de ${p.name}:</b><ul class="mini-list">`;p.boxes.forEach(b=>{const s=boxStats(p,b);html+=`<li>${b.type==='efectivo'?'💵':'🏦'} <b>${b.name}</b>: ${fmt(s.bal)}</li>`;});html+=`</ul><br>Total: <b>${fmt(t.total)}</b>`;addBotMessage(html,`Total ${fmt(t.total)}`);return;}
+  if(/resumen|general|total/.test(text)){addBotMessage(`<b>📊 Resumen de ${p.name}:</b><ul class="mini-list"><li>💰 Total: <b>${fmt(t.total)}</b></li><li>💵 Efectivo: <b>${fmt(t.totalEf)}</b></li><li>🏦 Bancarizado: <b>${fmt(t.totalTr)}</b></li><li>💸 Gastado: <b>${fmt(t.totalSpent)}</b></li></ul>`);return;}
+  if(/gasto|categoria/.test(text)){const byCat={};p.transactions.filter(tx=>tx.type==='gasto').forEach(tx=>{const c=tx.category||'General';byCat[c]=(byCat[c]||0)+tx.amount;});const data=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);if(!data.length){addBotMessage('No hay gastos.');return;}const total=data.reduce((s,d)=>s+d[1],0);let html=`<b>📈 Gastos (${fmt(total)}):</b><ul class="mini-list">`;data.forEach(([cat,amt])=>{html+=`<li><b>${cat}</b>: ${fmt(amt)} (${Math.round(amt/total*100)}%)</li>`;});html+='</ul>';addBotMessage(html);return;}
+  if(/recordatorio|pendiente/.test(text)){const pending=p.reminders.filter(r=>!r.done);if(!pending.length){addBotMessage('✅ Sin recordatorios pendientes.');return;}let html=`<b>⏰ Pendientes (${pending.length}):</b><ul class="mini-list">`;pending.forEach(r=>{const d=new Date(r.date+'T00:00:00');const diff=Math.round((d-new Date().setHours(0,0,0,0))/86400000);html+=`<li>${diff<0?'🔴':diff<=7?'🟡':'🟢'} <b>${escapeHtml(r.concept)}</b> ${fmt(r.amount)} (${diff<0?'Vencido':'En '+diff+' días'})</li>`;});html+='</ul>';addBotMessage(html);return;}
+  if(/ultim|reciente|movimiento/.test(text)){const sorted=[...p.transactions].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);if(!sorted.length){addBotMessage('Sin movimientos.');return;}let html=`<b>📒 Últimos movimientos:</b><ul class="mini-list">`;sorted.forEach(tx=>{html+=`<li>${tx.type==='ingreso'?'⬆':'⬇'} ${tx.date} — ${escapeHtml(tx.desc||tx.type)} (${fmt(tx.amount)})</li>`;});html+='</ul>';addBotMessage(html);return;}
+  const bm=text.match(/busca[r]?\s+(.+)/);if(bm){const term=bm[1].trim();const found=p.transactions.filter(tx=>(tx.desc||'').toLowerCase().includes(term));if(!found.length){addBotMessage(`No encontré "${escapeHtml(term)}".`);return;}let html=`<b>🔍 ${found.length} resultado(s):</b><ul class="mini-list">`;found.slice(0,8).forEach(tx=>{html+=`<li>${tx.date} — ${escapeHtml(tx.desc||'—')} (${fmt(tx.amount)})</li>`;});html+='</ul>';addBotMessage(html);return;}
+  if(/hola|buenas/.test(text)){addBotMessage('¡Hola! 👋 ¿En qué te ayudo?');return;}
+  if(/gracias/.test(text)){addBotMessage('¡De nada! 😊');return;}
+  addBotMessage('No entendí. Escribí <b>"Ayuda"</b> para ver los comandos disponibles.');
 }
 </script>
 </body>
