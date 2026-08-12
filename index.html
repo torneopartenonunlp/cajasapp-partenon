@@ -1,4 +1,4 @@
-h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,7 @@ h<!DOCTYPE html>
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBWph_ZjgtMGA33M5AnDNkBmRhOE1OJmSE",
+    apiKey: "AIzaSyBg3_7jPm6aLxam8vqk_TtG0wHngg_guK",
     authDomain: "cajasapp-partenon.firebaseapp.com",
     projectId: "cajasapp-partenon",
     storageBucket: "cajasapp-partenon.firebasestorage.app",
@@ -145,7 +145,49 @@ h<!DOCTYPE html>
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:99;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .loading{position:fixed;inset:0;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;z-index:999;font-weight:bold;color:var(--teal);font-size:20px;}
-  @media(max-width:820px){.app{flex-direction:column;}.sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}.brand{margin-bottom:0;}.user-info{display:none;}.side-label{display:none;}.proj-item{width:auto;}.add-proj{margin-top:0;width:auto;}.side-actions{margin-top:0;}.main{padding:18px;}.bar-row{grid-template-columns:90px 1fr 90px;}}
+  
+  /* ===== CHAT ASISTENTE ===== */
+  .chat-fab{position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(13,148,136,.4);cursor:pointer;z-index:98;transition:.2s;}
+  .chat-fab:hover{transform:scale(1.08);}
+  .chat-fab.listening{animation:pulse 1.5s infinite;background:linear-gradient(135deg,var(--red),#f87171);}
+  @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(220,38,38,.4);}50%{box-shadow:0 8px 36px rgba(220,38,38,.7);}}
+  .chat-panel{position:fixed;bottom:96px;right:24px;width:380px;max-width:calc(100vw - 48px);height:540px;max-height:calc(100vh - 120px);background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.2);display:none;flex-direction:column;z-index:97;overflow:hidden;}
+  .chat-panel.open{display:flex;animation:slideUp .25s ease;}
+  @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .chat-header{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .chat-header h3{font-size:16px;display:flex;align-items:center;gap:8px;}
+  .chat-header-actions{display:flex;gap:8px;}
+  .chat-header button{background:rgba(255,255,255,.2);color:#fff;width:30px;height:30px;border-radius:8px;font-size:14px;}
+  .chat-header button:hover{background:rgba(255,255,255,.3);}
+  .chat-header button.active{background:rgba(255,255,255,.4);}
+  .chat-messages{flex:1;overflow-y:auto;padding:16px;background:#f8fafc;}
+  .chat-msg{margin-bottom:12px;display:flex;gap:8px;max-width:85%;}
+  .chat-msg.user{margin-left:auto;flex-direction:row-reverse;}
+  .chat-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .chat-msg.bot .chat-avatar{background:linear-gradient(135deg,var(--teal),var(--teal2));}
+  .chat-msg.user .chat-avatar{background:#e2e8f0;}
+  .chat-bubble{padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.4;}
+  .chat-msg.bot .chat-bubble{background:#fff;border:1px solid var(--line);}
+  .chat-msg.user .chat-bubble{background:var(--teal);color:#fff;}
+  .chat-bubble b{display:block;margin-bottom:4px;}
+  .chat-bubble .mini-list{margin-top:6px;padding-left:16px;}
+  .chat-bubble .mini-list li{margin:2px 0;}
+  .chat-input-area{padding:12px;border-top:1px solid var(--line);display:flex;gap:8px;background:#fff;}
+  .chat-input{flex:1;padding:10px 14px;border:1.5px solid var(--line);border-radius:20px;font-size:14px;outline:none;}
+  .chat-input:focus{border-color:var(--teal2);}
+  .chat-input-area button{width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;}
+  .chat-input-area button:hover{background:var(--teal2);}
+  .chat-input-area button.mic.listening{background:var(--red);animation:pulse2 1.5s infinite;}
+  @keyframes pulse2{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  .chat-suggestions{padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);background:#fff;}
+  .chat-chip{background:#f1f5f9;color:var(--ink);padding:5px 10px;border-radius:12px;font-size:12px;cursor:pointer;}
+  .chat-chip:hover{background:#e2e8f0;}
+  
+  @media(max-width:820px){
+    .app{flex-direction:column;}.sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}.brand{margin-bottom:0;}.user-info{display:none;}.side-label{display:none;}.proj-item{width:auto;}.add-proj{margin-top:0;width:auto;}.side-actions{margin-top:0;}.main{padding:18px;}.bar-row{grid-template-columns:90px 1fr 90px;}
+    .chat-panel{width:calc(100vw - 24px);right:12px;bottom:84px;height:60vh;}
+    .chat-fab{bottom:12px;right:12px;}
+  }
 </style>
 </head>
 <body>
@@ -225,6 +267,32 @@ h<!DOCTYPE html>
 <div class="overlay" id="overlay"><div class="modal" id="modalBox"></div></div>
 <div class="toast" id="toast"></div>
 
+<!-- ===== CHAT ASISTENTE ===== -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Asistente AI" style="display:none;">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <h3>🤖 Asistente</h3>
+    <div class="chat-header-actions">
+      <button id="voiceToggle" onclick="toggleVoice()" title="Activar/desactivar voz">🔊</button>
+      <button onclick="clearChat()" title="Limpiar chat">🗑</button>
+      <button onclick="toggleChat()" title="Cerrar">✕</button>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-suggestions" id="chatSuggestions">
+    <button class="chat-chip" onclick="askBot('¿Cuánto tengo en efectivo?')">💵 Efectivo</button>
+    <button class="chat-chip" onclick="askBot('Resumen del proyecto')">📊 Resumen</button>
+    <button class="chat-chip" onclick="askBot('Gastos por categoría')">📈 Gastos</button>
+    <button class="chat-chip" onclick="askBot('Recordatorios pendientes')">⏰ Pendientes</button>
+    <button class="chat-chip" onclick="askBot('Ayuda')">❓ Ayuda</button>
+  </div>
+  <div class="chat-input-area">
+    <button class="mic" id="micBtn" onclick="toggleMic()" title="Dictar pregunta">🎤</button>
+    <input type="text" class="chat-input" id="chatInput" placeholder="Preguntale algo..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()" title="Enviar">➤</button>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    LÓGICA SIN BUCLE: onSnapshot SOLO LEE. persist() SOLO escribe
@@ -234,7 +302,7 @@ const COLORS = ['#0d9488','#16a34a','#2563eb','#f59e0b','#dc2626','#8b5cf6','#db
 const ALLOWED_EMAIL = 'torneo.partenon.unlp@gmail.com';
 
 const SEED_DATA = {
-  settings:{ categories:['Material Deportivo','Uso Personal Compensable','Reparación Vehículo Proyecto','Alimentación Mascotas Proyecto','Logística / Envíos','Hospedaje','Transporte','Comidas / Buffet','Inscripción','Otros'] },
+  settings:{ categories:['Material Deportivo','Uso Personal Compensable','Reparación Vehículo Proyecto','Alimentación Mascotas Proyecto','Logística / Envíos','Hospedaje','Transporte','Comidas / Buffet','Inscripción','Otros','Inscripciones','Entradas','Buffet','Honorarios','Medallas','Premios','Cotillón','Librería','Alimentación'] },
   current:'p1',
   projects:[
     { id:'p1', name:'Torneo Partenón', emoji:'🏆', date:'Recaudación del torneo',
@@ -253,6 +321,9 @@ let state = JSON.parse(JSON.stringify(SEED_DATA));
 let txType = 'ingreso';
 let editingTx = null;
 let subscribed = false;
+let voiceEnabled = true;
+let recognition = null;
+let isListening = false;
 
 const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
 const todayISO = () => new Date().toISOString().slice(0,10);
@@ -279,13 +350,18 @@ function logout(){ window.firebaseAPI.signOut(window.firebaseAPI.auth).then(()=>
 function showApp(user){
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'flex';
+  document.getElementById('chatFab').style.display = 'flex';
   document.getElementById('userInfo').innerHTML = `<strong>${user.displayName||user.email}</strong><small>${user.email}</small><button class="logout-btn" onclick="logout()">🚪 Cerrar sesión</button>`;
   if(!subscribed){ subscribed = true; initFirebase(); }
   render();
+  if(document.getElementById('chatMessages').children.length===0){
+    addBotMessage('¡Hola! 👋 Soy tu asistente. Podés preguntarme sobre tus cajas, movimientos, gastos, recordatorios o cualquier dato del proyecto. Probá con "¿Cuánto tengo?" o "Ayuda".');
+  }
 }
 function showLogin(){
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('chatFab').style.display = 'none';
   document.getElementById('deniedMsg').style.display = 'none';
 }
 function showDenied(msg){
@@ -299,16 +375,15 @@ function initFirebase(){
   const ref = doc(db, "appData", "mainState");
   onSnapshot(ref, snap => {
     if (snap.exists()) {
-      state = snap.data();   // leer
-      render();              // pintar (SIN guardar)
+      state = snap.data();
+      render();
     } else {
-      render();              // primera vez: pintar seed
-      persist();             // crear el documento en la nube UNA sola vez
+      render();
+      persist();
     }
   }, err => { console.error('Error Firebase:', err); toast('❌ Error de conexión a Firebase'); render(); });
 }
 
-/* ---------- ESCRITURA: solo la llaman acciones del usuario ---------- */
 function persist(){
   if(!window.firebaseAPI) return;
   const { db, doc, setDoc } = window.firebaseAPI;
@@ -567,6 +642,349 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 document.getElementById('txDate').value=todayISO();
 document.getElementById('remDate').value=todayISO();
 setTxType('ingreso');
+
+/* ============================================================
+   CHAT ASISTENTE - Lógica local + voz + Gemini opcional
+============================================================ */
+function toggleChat(){
+  const panel = document.getElementById('chatPanel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')){
+    setTimeout(()=>document.getElementById('chatInput').focus(), 100);
+  }
+}
+
+function toggleVoice(){
+  voiceEnabled = !voiceEnabled;
+  const btn = document.getElementById('voiceToggle');
+  btn.textContent = voiceEnabled ? '🔊' : '🔇';
+  btn.classList.toggle('active', voiceEnabled);
+  toast(voiceEnabled ? '🔊 Voz activada' : '🔇 Voz desactivada');
+}
+
+function speak(text){
+  if(!voiceEnabled) return;
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'es-AR';
+  utter.rate = 1.0;
+  utter.pitch = 1.0;
+  window.speechSynthesis.speak(utter);
+}
+
+function toggleMic(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ toast('⚠️ Tu navegador no soporta dictado de voz'); return; }
+  if(isListening){ stopListening(); return; }
+  recognition = new SR();
+  recognition.lang = 'es-AR';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onstart = () => {
+    isListening = true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('chatFab').classList.add('listening');
+  };
+  recognition.onend = () => {
+    isListening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('chatFab').classList.remove('listening');
+  };
+  recognition.onresult = (e) => {
+    const text = e.results[0][0].transcript;
+    document.getElementById('chatInput').value = text;
+    sendChat();
+  };
+  recognition.onerror = (e) => {
+    console.error('Speech error:', e);
+    if(e.error === 'not-allowed') toast('⚠️ Permiso de micrófono denegado');
+    else toast('⚠️ No pude escuchar, intentá de nuevo');
+  };
+  recognition.start();
+}
+
+function stopListening(){
+  if(recognition){ recognition.stop(); }
+}
+
+function addUserMessage(text){
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user';
+  div.innerHTML = `<div class="chat-avatar">👤</div><div class="chat-bubble">${escapeHtml(text)}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addBotMessage(html, plainText){
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.innerHTML = `<div class="chat-avatar">🤖</div><div class="chat-bubble">${html}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  if(plainText) speak(plainText);
+  else{
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    speak(tmp.textContent || tmp.innerText);
+  }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function clearChat(){
+  document.getElementById('chatMessages').innerHTML = '';
+  addBotMessage('Chat limpio. ¿En qué te ayudo ahora?');
+}
+
+function askBot(q){
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+function sendChat(){
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim();
+  if(!q) return;
+  addUserMessage(q);
+  input.value = '';
+  setTimeout(() => processQuestion(q), 150);
+}
+
+function processQuestion(q){
+  const text = q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const p = cur();
+  const t = projectTotals(p);
+  
+  // AYUDA
+  if(/ayuda|help|comandos|que podes|que sabes/.test(text)){
+    addBotMessage(`<b>🤖 Puedo ayudarte con:</b>
+      <ul class="mini-list">
+        <li>💵 <b>"¿Cuánto tengo?"</b> — saldos de todas las cajas</li>
+        <li>📊 <b>"Resumen del proyecto"</b> — totales generales</li>
+        <li>📈 <b>"Gastos por categoría"</b> — desglose de gastos</li>
+        <li>⏰ <b>"Recordatorios"</b> — pendientes y vencidos</li>
+        <li>📒 <b>"Últimos movimientos"</b> — historial reciente</li>
+        <li>🔍 <b>"Buscar X"</b> — busca en descripciones</li>
+        <li>📅 <b>"Movimientos de [mes]"</b> — filtra por mes</li>
+        <li>🎯 <b>"Mayor gasto"</b> — el gasto más alto</li>
+      </ul>`,
+      'Puedo ayudarte con saldos, resumen del proyecto, gastos por categoría, recordatorios, últimos movimientos, búsquedas y más.');
+    return;
+  }
+  
+  // SALDO / CUÁNTO TENGO
+  if(/saldo|cuanto tengo|balance|efectivo|cuanto hay|plata|dinero/.test(text)){
+    let html = `<b>💰 Saldos actuales de ${p.name}:</b><ul class="mini-list">`;
+    let plain = `Saldos actuales de ${p.name}: `;
+    p.boxes.forEach(b => {
+      const s = boxStats(p, b);
+      const icon = b.type === 'efectivo' ? '💵' : '🏦';
+      html += `<li>${icon} <b>${b.name}</b>: ${fmt(s.bal)}</li>`;
+      plain += `${b.name} ${fmt(s.bal)}. `;
+    });
+    html += `</ul><br>📦 <b>Total general:</b> ${fmt(t.total)}`;
+    plain += `Total general ${fmt(t.total)}.`;
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // RESUMEN DEL PROYECTO
+  if(/resumen|general|total|estado/.test(text)){
+    const html = `<b>📊 Resumen de ${p.name}:</b>
+      <ul class="mini-list">
+        <li>💰 Total del proyecto: <b>${fmt(t.total)}</b></li>
+        <li>💵 En efectivo: <b>${fmt(t.totalEf)}</b></li>
+        <li>🏦 Bancarizado: <b>${fmt(t.totalTr)}</b></li>
+        <li>💸 Total gastado: <b>${fmt(t.totalSpent)}</b></li>
+        <li>📒 Movimientos: <b>${p.transactions.length}</b></li>
+        <li>⏰ Recordatorios: <b>${p.reminders.filter(r=>!r.done).length}</b> pendientes</li>
+      </ul>`;
+    const plain = `Resumen de ${p.name}. Total ${fmt(t.total)}. Efectivo ${fmt(t.totalEf)}. Bancarizado ${fmt(t.totalTr)}. Gastado ${fmt(t.totalSpent)}. ${p.transactions.length} movimientos y ${p.reminders.filter(r=>!r.done).length} recordatorios pendientes.`;
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // GASTOS POR CATEGORÍA
+  if(/gasto|categoria|desglose|donde gaste|en que gaste/.test(text)){
+    const byCat = {};
+    p.transactions.filter(tx=>tx.type==='gasto').forEach(tx => {
+      const c = tx.category || 'General';
+      byCat[c] = (byCat[c] || 0) + tx.amount;
+    });
+    const data = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+    if(!data.length){
+      addBotMessage('No hay gastos registrados todavía en este proyecto.', 'No hay gastos registrados todavía.');
+      return;
+    }
+    const total = data.reduce((s,d)=>s+d[1],0);
+    let html = `<b>📈 Gastos por categoría (${fmt(total)}):</b><ul class="mini-list">`;
+    let plain = `Gastos por categoría. Total ${fmt(total)}. `;
+    data.forEach(([cat, amt]) => {
+      const pct = Math.round(amt/total*100);
+      html += `<li><b>${cat}</b>: ${fmt(amt)} (${pct}%)</li>`;
+      plain += `${cat} ${fmt(amt)} (${pct}%). `;
+    });
+    html += '</ul>';
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // RECORDATORIOS
+  if(/recordatorio|pendiente|vencido|proxim|recordar/.test(text)){
+    const pending = p.reminders.filter(r => !r.done);
+    const overdue = pending.filter(r => {
+      const d = new Date(r.date+'T00:00:00');
+      const now = new Date(); now.setHours(0,0,0,0);
+      return d < now;
+    });
+    if(!pending.length){
+      addBotMessage('✅ No tenés recordatorios pendientes.', 'No tenés recordatorios pendientes.');
+      return;
+    }
+    let html = `<b>⏰ Recordatorios (${pending.length}):</b><ul class="mini-list">`;
+    let plain = `Tenés ${pending.length} recordatorios pendientes. `;
+    pending.forEach(r => {
+      const d = new Date(r.date+'T00:00:00');
+      const now = new Date(); now.setHours(0,0,0,0);
+      const diff = Math.round((d-now)/86400000);
+      const icon = diff < 0 ? '🔴' : (diff <= 7 ? '🟡' : '🟢');
+      const status = diff < 0 ? `Vencido hace ${-diff} días` : (diff === 0 ? 'Hoy' : `En ${diff} días`);
+      html += `<li>${icon} <b>${r.concept}</b> — ${fmt(r.amount)} (${status})</li>`;
+      plain += `${r.concept} por ${fmt(r.amount)}, ${status}. `;
+    });
+    html += '</ul>';
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // ÚLTIMOS MOVIMIENTOS
+  if(/ultim|reciente|historial|movimiento/.test(text)){
+    const sorted = [...p.transactions].sort((a,b)=>b.date.localeCompare(a.date));
+    if(!sorted.length){
+      addBotMessage('Aún no hay movimientos registrados.', 'Aún no hay movimientos registrados.');
+      return;
+    }
+    const last5 = sorted.slice(0, 5);
+    let html = `<b>📒 Últimos ${last5.length} movimientos:</b><ul class="mini-list">`;
+    let plain = `Últimos movimientos: `;
+    last5.forEach(tx => {
+      const icon = tx.type === 'ingreso' ? '⬆' : (tx.type === 'gasto' ? '⬇' : '🔁');
+      const boxName = tx.type === 'transferencia' ? 
+        `${boxById(p,tx.fromBoxId)?.name || '?'} → ${boxById(p,tx.toBoxId)?.name || '?'}` :
+        (boxById(p,tx.boxId)?.name || '—');
+      html += `<li>${icon} <b>${tx.date}</b> — ${tx.desc || tx.type} (${fmt(tx.amount)}, ${boxName})</li>`;
+      plain += `${tx.date} ${tx.desc || tx.type} por ${fmt(tx.amount)}. `;
+    });
+    html += '</ul>';
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // MAYOR GASTO
+  if(/mayor|maximo|max|gasto grande/.test(text)){
+    const gastos = p.transactions.filter(tx=>tx.type==='gasto').sort((a,b)=>b.amount-a.amount);
+    if(!gastos.length){
+      addBotMessage('No hay gastos registrados.', 'No hay gastos registrados.');
+      return;
+    }
+    const top = gastos[0];
+    const html = `<b>🎯 Mayor gasto registrado:</b>
+      <ul class="mini-list">
+        <li>📅 <b>Fecha:</b> ${top.date}</li>
+        <li>💰 <b>Monto:</b> ${fmt(top.amount)}</li>
+        <li>🏷️ <b>Categoría:</b> ${top.category || '—'}</li>
+        <li>📝 <b>Descripción:</b> ${top.desc || '—'}</li>
+      </ul>`;
+    addBotMessage(html, `El mayor gasto fue ${fmt(top.amount)} el ${top.date}, ${top.desc || top.category}.`);
+    return;
+  }
+  
+  // BUSCAR
+  const buscarMatch = text.match(/busca[r]?\s+(.+)/);
+  if(buscarMatch){
+    const term = buscarMatch[1].trim();
+    const found = p.transactions.filter(tx => 
+      (tx.desc || '').toLowerCase().includes(term) ||
+      (tx.category || '').toLowerCase().includes(term)
+    );
+    if(!found.length){
+      addBotMessage(`No encontré movimientos con "${term}".`, `No encontré movimientos con ${term}.`);
+      return;
+    }
+    let html = `<b>🔍 ${found.length} resultado(s) para "${term}":</b><ul class="mini-list">`;
+    let plain = `Encontré ${found.length} movimientos. `;
+    found.slice(0, 8).forEach(tx => {
+      const icon = tx.type === 'ingreso' ? '⬆' : (tx.type === 'gasto' ? '⬇' : '🔁');
+      html += `<li>${icon} ${tx.date} — ${tx.desc || '—'} (${fmt(tx.amount)})</li>`;
+      plain += `${tx.desc} por ${fmt(tx.amount)}. `;
+    });
+    if(found.length > 8) html += `<li>...y ${found.length - 8} más</li>`;
+    html += '</ul>';
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // FILTRO POR MES
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const mesMatch = text.match(new RegExp(`(${meses.join('|')})`));
+  if(mesMatch){
+    const mesIdx = meses.indexOf(mesMatch[1]);
+    const movsMes = p.transactions.filter(tx => {
+      const m = parseInt(tx.date.split('-')[1]) - 1;
+      return m === mesIdx;
+    });
+    if(!movsMes.length){
+      addBotMessage(`No hay movimientos en ${meses[mesIdx]}.`, `No hay movimientos en ${meses[mesIdx]}.`);
+      return;
+    }
+    const ingresos = movsMes.filter(t=>t.type==='ingreso').reduce((s,t)=>s+t.amount,0);
+    const gastos = movsMes.filter(t=>t.type==='gasto').reduce((s,t)=>s+t.amount,0);
+    const html = `<b>📅 Movimientos de ${meses[mesIdx]}:</b>
+      <ul class="mini-list">
+        <li>📒 Total movimientos: <b>${movsMes.length}</b></li>
+        <li>⬆ Ingresos: <b>${fmt(ingresos)}</b></li>
+        <li>⬇ Gastos: <b>${fmt(gastos)}</b></li>
+      </ul>`;
+    addBotMessage(html, `En ${meses[mesIdx]} hubo ${movsMes.length} movimientos. Ingresos ${fmt(ingresos)}, gastos ${fmt(gastos)}.`);
+    return;
+  }
+  
+  // PROYECTOS
+  if(/proyecto|proyectos|todos/.test(text)){
+    let html = `<b>📁 Tus proyectos:</b><ul class="mini-list">`;
+    let plain = 'Tus proyectos: ';
+    state.projects.forEach(pr => {
+      const pt = projectTotals(pr);
+      html += `<li>${pr.emoji} <b>${pr.name}</b> — ${fmt(pt.total)}</li>`;
+      plain += `${pr.name} ${fmt(pt.total)}. `;
+    });
+    html += '</ul>';
+    addBotMessage(html, plain);
+    return;
+  }
+  
+  // SALUDO
+  if(/hola|buenas|hey|saludos/.test(text)){
+    addBotMessage(`¡Hola! 👋 ¿En qué te puedo ayudar? Podés preguntarme sobre saldos, gastos, recordatorios o cualquier dato de <b>${p.name}</b>.`, `¡Hola! ¿En qué te puedo ayudar?`);
+    return;
+  }
+  
+  // GRACIAS
+  if(/gracias|thanks|genial|perfecto|excelente/.test(text)){
+    const respuestas = ['¡De nada! 😊', '¡Un placer!', 'Acá estoy para lo que necesites.', '¡Cuando quieras!'];
+    const r = respuestas[Math.floor(Math.random()*respuestas.length)];
+    addBotMessage(r, r);
+    return;
+  }
+  
+  // DEFAULT
+  addBotMessage(`No entendí bien tu pregunta. Escribí <b>"Ayuda"</b> para ver todo lo que puedo hacer, o probá con:<ul class="mini-list"><li>¿Cuánto tengo?</li><li>Resumen del proyecto</li><li>Gastos por categoría</li><li>Recordatorios pendientes</li></ul>`, 'No entendí bien. Escribí ayuda para ver los comandos disponibles.');
+}
 </script>
 </body>
 </html>
